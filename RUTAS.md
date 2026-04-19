@@ -29,6 +29,26 @@ Este documento define todas las rutas (endpoints) de la API REST de BookLog. Tod
 | PUT | `/api/users/{id}` | Actualizar usuario | `UserController.updateUser()` |
 | DELETE | `/api/users/{id}` | Eliminar usuario | `UserController.deleteUser()` |
 
+### Cuerpo de Request (POST/PUT) - Usuarios
+
+**POST `/api/users`**
+```json
+{
+  "nombreUsuario": "juan_perez",
+  "correo": "juan@example.com",
+  "hashContrasena": "password123"
+}
+```
+
+**PUT `/api/users/{id}`**
+```json
+{
+  "nombreUsuario": "juan_perez_actualizado",
+  "correo": "juan_nuevo@example.com",
+  "hashContrasena": "password456"
+}
+```
+
 ---
 
 ## 📖 Rutas de LIBROS
@@ -46,6 +66,43 @@ Este documento define todas las rutas (endpoints) de la API REST de BookLog. Tod
 | PATCH | `/api/books/{id}/progress?progreso=X` | Actualizar progreso | `BookController.updateBookProgress()` |
 | DELETE | `/api/books/{id}` | Eliminar libro | `BookController.deleteBook()` |
 
+### Cuerpo de Request (POST/PUT/PATCH) - Libros
+
+**POST `/api/books`**
+```json
+{
+  "usuarioId": 1,
+  "rutaArchivo": "/libros/harry_potter_1.pdf",
+  "nombreArchivo": "harry_potter_1.pdf",
+  "titulo": "Harry Potter y la Piedra Filosofal",
+  "formato": "PDF",
+  "autor": "J.K. Rowling",
+  "serieId": 1,
+  "progreso": 25.0,
+  "estado": "LEYENDO",
+  "coverPath": "/covers/hp1.jpg"
+}
+```
+
+**PUT `/api/books/{id}`**
+```json
+{
+  "usuarioId": 1,
+  "rutaArchivo": "/libros/harry_potter_1_v2.pdf",
+  "nombreArchivo": "harry_potter_1_v2.pdf",
+  "titulo": "Harry Potter y la Piedra Filosofal (Edicion 2)",
+  "formato": "PDF",
+  "autor": "J.K. Rowling",
+  "serieId": 1,
+  "progreso": 70.0,
+  "estado": "LEYENDO",
+  "coverPath": "/covers/hp1_v2.jpg"
+}
+```
+
+**PATCH `/api/books/{id}/progress?progreso=80`**
+- No lleva body, solo query param `progreso`.
+
 ---
 
 ## 📚 Rutas de SERIES
@@ -57,6 +114,24 @@ Este documento define todas las rutas (endpoints) de la API REST de BookLog. Tod
 | GET | `/api/series/usuario/{usuarioId}` | Series del usuario | `SerieController.getSeriesByUsuarioId()` |
 | PUT | `/api/series/{id}` | Actualizar serie | `SerieController.updateSerie()` |
 | DELETE | `/api/series/{id}` | Eliminar serie | `SerieController.deleteSerie()` |
+
+### Cuerpo de Request (POST/PUT) - Series
+
+**POST `/api/series`**
+```json
+{
+  "usuarioId": 1,
+  "nombre": "Harry Potter"
+}
+```
+
+**PUT `/api/series/{id}`**
+```json
+{
+  "usuarioId": 1,
+  "nombre": "Harry Potter (Saga Completa)"
+}
+```
 
 ---
 
@@ -70,6 +145,24 @@ Este documento define todas las rutas (endpoints) de la API REST de BookLog. Tod
 | PUT | `/api/colecciones/{id}` | Actualizar colección | `ColeccionController.updateColeccion()` |
 | DELETE | `/api/colecciones/{id}` | Eliminar colección | `ColeccionController.deleteColeccion()` |
 
+### Cuerpo de Request (POST/PUT) - Colecciones
+
+**POST `/api/colecciones`**
+```json
+{
+  "usuarioId": 1,
+  "nombre": "Favoritos"
+}
+```
+
+**PUT `/api/colecciones/{id}`**
+```json
+{
+  "usuarioId": 1,
+  "nombre": "Favoritos 2026"
+}
+```
+
 ---
 
 ## 📝 Rutas de NOTAS
@@ -81,6 +174,26 @@ Este documento define todas las rutas (endpoints) de la API REST de BookLog. Tod
 | GET | `/api/notes/lectura/{lecturaId}` | Notas de libro | `NoteController.getNotesByLecturaId()` |
 | PUT | `/api/notes/{id}` | Actualizar nota | `NoteController.updateNote()` |
 | DELETE | `/api/notes/{id}` | Eliminar nota | `NoteController.deleteNote()` |
+
+### Cuerpo de Request (POST/PUT) - Notas
+
+**POST `/api/notes`**
+```json
+{
+  "lecturaId": 1,
+  "contenido": "Excelente desarrollo del personaje principal.",
+  "referenciaPagina": "p. 45"
+}
+```
+
+**PUT `/api/notes/{id}`**
+```json
+{
+  "lecturaId": 1,
+  "contenido": "Actualizacion: el capitulo 4 mejora bastante el ritmo.",
+  "referenciaPagina": "p. 60"
+}
+```
 
 ---
 
@@ -94,6 +207,28 @@ Este documento define todas las rutas (endpoints) de la API REST de BookLog. Tod
 | PUT | `/api/quotes/{id}` | Actualizar cita | `QuoteController.updateQuote()` |
 | DELETE | `/api/quotes/{id}` | Eliminar cita | `QuoteController.deleteQuote()` |
 
+### Cuerpo de Request (POST/PUT) - Citas
+
+**POST `/api/quotes`**
+```json
+{
+  "lecturaId": 1,
+  "textoCitado": "La magia existe, solo hay que saber verla.",
+  "referenciaPagina": "p. 72",
+  "comentario": "Frase inspiradora"
+}
+```
+
+**PUT `/api/quotes/{id}`**
+```json
+{
+  "lecturaId": 1,
+  "textoCitado": "No son nuestras habilidades lo que muestra quienes somos.",
+  "referenciaPagina": "p. 88",
+  "comentario": "Cita favorita"
+}
+```
+
 ---
 
 ## 🔗 Rutas de LECTURA-COLECCIÓN
@@ -104,6 +239,16 @@ Este documento define todas las rutas (endpoints) de la API REST de BookLog. Tod
 | GET | `/api/lectura-coleccion/coleccion/{coleccionId}` | Libros en colección | `LecturaColeccionController.getBooksByColeccion()` |
 | GET | `/api/lectura-coleccion/lectura/{lecturaId}` | Colecciones de libro | `LecturaColeccionController.getColeccionesByBook()` |
 | DELETE | `/api/lectura-coleccion/{lecturaId}/{coleccionId}` | Remover libro | `LecturaColeccionController.removeBookFromColeccion()` |
+
+### Cuerpo de Request (POST) - Lectura-Colección
+
+**POST `/api/lectura-coleccion`**
+```json
+{
+  "lecturaId": 1,
+  "coleccionId": 2
+}
+```
 
 ---
 
